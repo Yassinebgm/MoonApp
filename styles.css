@@ -1,0 +1,9 @@
+body{
+    background: #0D1321;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+}
+#moonCanvas {
+    background: #333;
+}

@@ -67,7 +67,7 @@ const ctx = canvas.getContext("2d");
 
 const cx = 150;
 const cy = 150;
-const r = 100;
+const r = 140;
 
 const SYNODIC_MONTH = 29.530588861;
 const REF_NEW_MOON = Date.UTC(2000, 0, 6, 18, 14, 0);
@@ -111,14 +111,115 @@ ctx.fillStyle = isCrescent ? "#1A2035" : "#F0E6D2";
 ctx.fill();
 
 function getPhaseName(phase) {
-if (phase < 0.02 || phase > 0.98) return "New Moon";
-if (phase < 0.24) return "Waxing Crescent";
-if (phase < 0.26) return "First Quarter";
-if (phase < 0.49) return "Waxing Gibbous";
-if (phase < 0.51) return "Full Moon";
-if (phase < 0.74) return "Waning Gibbous";
-if (phase < 0.76) return "Last Quarter";
-return "Waning Crescent";
-
-
+    if (phase < 0.02 || phase > 0.98) return "New Moon";
+    if (phase < 0.24) return "Waxing Crescent";
+    if (phase < 0.26) return "First Quarter";
+    if (phase < 0.49) return "Waxing Gibbous";
+    if (phase < 0.51) return "Full Moon";
+    if (phase < 0.74) return "Waning Gibbous";
+    if (phase < 0.76) return "Last Quarter";
+    return "Waning Crescent";
 }
+
+const illum = getIllumination(phase)
+const name = getPhaseName(phase)
+
+document.getElementById("illumText").textContent = Math.round(illum * 100) + "% illuminated";
+document.getElementById("nameText").textContent = name;
+
+//stars
+const starsCanvas = document.getElementById("stars");
+const sctx = starsCanvas.getContext("2d"); //pencil to draw
+
+starsCanvas.width = window.innerWidth;
+starsCanvas.height = window.innerHeight;
+//loop to make 150 stars
+const stars = [];
+for (let i = 0; i < 150; i++) {
+    stars.push({//each star has these 5 propreties
+        x: Math.random() * starsCanvas.width,
+        y: Math.random() * starsCanvas.height,
+        radius: Math.random() * 1.2 + 0.3,
+        speed: Math.random() * 0.005 + 0.001,
+        phase: Math.random() * Math.PI * 2,
+    });
+}
+
+function drawStars(time) {
+    sctx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+    for (const star of stars) {
+        const twinkle = 0.5 + 0.5 * Math.sin(time * star.speed + star.phase);
+        sctx.beginPath();
+        sctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        sctx.fillStyle = `rgba(232, 230, 222, ${twinkle})`;
+        sctx.fill();
+    }
+    requestAnimationFrame(drawStars);
+}
+requestAnimationFrame(drawStars);
+
+//age lune et prochaine new moon
+
+function findNextPhaseDate(fromDate, targetPhase) {
+    const dayMs = 86400000;
+    let time = fromDate.getTime();
+    let prevPhase = getPhase(new Date(time));
+
+    for (let i = 0; i < 40; i++) {
+        time += dayMs;
+        const currentPhase = getPhase(new Date(time));
+
+        if (targetPhase === 0) {
+            if (currentPhase < prevPhase) return new Date(time);
+        } else if (prevPhase < targetPhase && currentPhase >= targetPhase) {
+            return new Date(time);
+        }
+        prevPhase = currentPhase;
+    }
+    return null;
+}
+
+const ageDays = phase * SYNODIC_MONTH;
+const nextFull = findNextPhaseDate(new Date(), 0.5);
+const nextNew = findNextPhaseDate(new Date(), 0);
+
+document.getElementById("ageText").textContent = ageDays.toFixed(1) + " days old";
+document.getElementById("nextFullText").textContent = "Next Full Moon: " + nextFull.toLocaleDateString();
+document.getElementById("nextNewText").textContent = "Next New Moon: " + nextNew.toLocaleDateString();
+
+//les cratères
+function mulberry32(seed) {
+    return function () {
+        seed |= 0;
+        seed = (seed + 0x6D2B79F5) | 0;
+        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+
+
+
+function drawCraters(cx, cy, r, seed) {
+    const rand = mulberry32(seed);
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.clip();
+
+    for (let i = 0; i < 14; i++) {
+        const angle = rand() * Math.PI * 2;
+        const dist = rand() * r * 0.85;
+        const craterR = r * (0.04 + rand() * 0.09);
+        const px = cx + Math.cos(angle) * dist;
+        const py = cy + Math.sin(angle) * dist;
+
+        ctx.beginPath();
+        ctx.arc(px, py, craterR, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0,0,0,0.07)";
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+drawCraters(cx, cy, r, 42);

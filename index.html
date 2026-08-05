@@ -10,6 +10,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/icon-192.png">
 </head>
 
 <body>
@@ -20,16 +22,21 @@
         <div class="app">
             <h1>Hueco Mundo</h1>
             <canvas id="moonCanvas" width="300" height="300"></canvas>
-            <p id="illumText"></p>
-            <p id="nameText"></p>
-            <p id="ageText"></p>
-            <p id="nextFullText"></p>
-            <p id="nextNewText"></p>
+            <div id="moonInfo" class="moon-info">
+                <p id="illumText"></p>
+                <p id="nameText"></p>
+                <p id="ageText"></p>
+                <p id="nextFullText"></p>
+                <p id="nextNewText"></p>
+            </div>
         </div>
     </section>
     <section class="ground">
         <nav class="menu">
-            <p>Menu goes here</p>
+            <button class="menu-item">Hadith</button>
+            <button class="menu-item">Todo</button>
+            <button class="menu-item">Focus Timer</button>
+            <button class="menu-item">Coming Soon</button>
         </nav>
     </section>
 

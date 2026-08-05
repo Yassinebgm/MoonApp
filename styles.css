@@ -4,14 +4,18 @@ body {
     font-family: 'JetBrains Mono', monospace;
     margin: 0;
 }
+* {
+  box-sizing: border-box;
+}
 
 .moon-view {
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     z-index: 1;
+    padding-bottom: 20px;
 }
 
 .app {
@@ -35,6 +39,19 @@ h1 {
     margin: 0 auto 24px;
     border-radius: 50%;
     box-shadow: 0 0 60px rgba(240, 230, 210, 0.25);
+    cursor: pointer;
+}
+
+.moon-info {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.8s ease, opacity 0.6s ease;
+}
+
+.moon-info.open {
+    max-height: 300px;
+    opacity: 1;
 }
 
 #nameText {
@@ -59,4 +76,74 @@ h1 {
     background-repeat: no-repeat;
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s ease, transform 1s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.ground.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+
+.menu-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    padding: 14px 16px;
+    white-space: normal;
+    background: rgba(13, 19, 33, 0.75);
+    color: #E8E6DE;
+    border: 1px solid rgba(232, 230, 222, 0.15);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.2s ease, transform 0.6s ease, opacity 0.6s ease;
+    opacity: 0;
+}
+
+.menu-item:hover {
+    background: rgba(13, 19, 33, 0.9);
+    transform: translateY(-2px);
+}
+
+.menu-item:nth-child(odd) {
+    transform: translateX(-60px);
+}
+
+.menu-item:nth-child(even){
+    transform: translateX(60px);
+}
+
+.ground.visible .menu-item {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+@media (max-width: 380px){
+    .menu {
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+    }
+    .menu-col {
+        width: 100%;
+        max-width: 280px;
+    }
 }

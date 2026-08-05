@@ -1,0 +1,25 @@
+{
+    "name": "Hueco Mundo",
+    "short_name": "Hueco Mundo",
+    "description": "Personal space app",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#0D1321",
+    "theme_color": "#0D1321",
+    "icons": [
+        {
+            "src": "img/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "img/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ]
+}

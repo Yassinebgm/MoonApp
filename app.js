@@ -223,3 +223,35 @@ function drawCraters(cx, cy, r, seed) {
 }
 
 drawCraters(cx, cy, r, 42);
+
+
+//for the animation of the dunes(scroll-reveal)
+
+const groundSection = document.querySelector(".ground");
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            groundSection.classList.add("visible");
+        }
+    });
+}, { threshold: 0.2 });
+
+observer.observe(groundSection);
+
+//moonbutton
+const moonInfo = document.getElementById("moonInfo");
+
+canvas.addEventListener("click", () => {
+  moonInfo.classList.toggle("open");
+});
+
+//checks if the browser even supports service workers
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch((err) => {
+      console.log("Service worker failed:", err);
+    });
+  });
+}
+

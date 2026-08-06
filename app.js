@@ -226,25 +226,35 @@ drawCraters(cx, cy, r, 42);
 
 
 //for the animation of the dunes(scroll-reveal)
+// const observer = new IntersectionObserver((entries) => {
+    // entries.forEach((entry) => {
+        // if (entry.isIntersecting) {
+            // groundSection.classList.add("visible");
+            // tabBar.classList.add("visible");
+        // }
+    // });
+// }, { threshold: 0.2 });
 
-const groundSection = document.querySelector(".ground");
+//observer.observe(groundSection);
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            groundSection.classList.add("visible");
-        }
-    });
-}, { threshold: 0.2 });
 
-observer.observe(groundSection);
-
-//moonbutton
+//now moon event toogle where everything apears and disapears
 const moonInfo = document.getElementById("moonInfo");
+const groundSection = document.querySelector(".ground");
+const tabBar = document.querySelector(".tab-bar");
 
 canvas.addEventListener("click", () => {
-  moonInfo.classList.toggle("open");
+    moonInfo.classList.toggle("open");
+    groundSection.classList.toggle("visible");
+    tabBar.classList.toggle("visible");
 });
+
+//moonbutton
+// const moonInfo = document.getElementById("moonInfo");
+
+// canvas.addEventListener("click", () => {
+//   moonInfo.classList.toggle("open");
+// });
 
 //checks if the browser even supports service workers
 if ("serviceWorker" in navigator) {
@@ -254,4 +264,5 @@ if ("serviceWorker" in navigator) {
     });
   });
 }
+
 

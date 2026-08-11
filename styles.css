@@ -9,19 +9,19 @@ body {
 }
 
 .moon-view {
-    min-height: 70vh;
+    min-height: 40vh;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     z-index: 1;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .app {
     max-width: 400px;
     width: 100%;
-    padding: 32px 24px;
+    padding: 16px 24px;
     text-align: center;
     position: relative;
     z-index: 1;
@@ -40,6 +40,10 @@ h1 {
     border-radius: 50%;
     box-shadow: 0 0 60px rgba(240, 230, 210, 0.25);
     cursor: pointer;
+    transition: transform 0.5s ease;
+}
+#moonCanvas.shrink {
+    transform: scale(0.5);
 }
 
 .moon-info {
@@ -47,6 +51,16 @@ h1 {
     overflow: hidden;
     opacity: 0;
     transition: max-height 0.8s ease, opacity 0.6s ease;
+}
+.moon-info p {
+    font-size: 9px;
+    margin: 2px 0;
+    color: #E8E6DE;
+}
+.moon-info #nameText {
+  font-size: 16px;
+  color: #E8E6DE;
+  font-weight: 500;
 }
 
 .moon-info.open {
@@ -84,6 +98,7 @@ h1 {
     align-items: center;
     justify-content: center;
     z-index: 1;
+    padding-bottom: 90px;
 
 }
 
@@ -132,6 +147,31 @@ h1 {
     transform: translateX(60px);
 }
 
+.todo-view {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0D1321;
+    z-index: 20;
+    padding: 40px 24px;
+    color: #E8E6DE;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.todo-view.open {
+display: block;
+}
+.toggle-btn {
+    background: none;
+    border: none;
+    color: #E8E6DE;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
 .ground.visible .menu-item {
     opacity: 1;
     transform: translateX(0);
@@ -161,7 +201,7 @@ h1 {
     border-top: 1px solid rgba(232, 230, 222, 0.1);
     padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
     transform: translateY(100%);
-    transition: transform 0.6 ease;
+    transition: transform 0.6s ease;
 }
 .tab-bar.visible {
     transform: translateY(0);

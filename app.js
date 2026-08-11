@@ -244,6 +244,7 @@ const groundSection = document.querySelector(".ground");
 const tabBar = document.querySelector(".tab-bar");
 
 canvas.addEventListener("click", () => {
+    canvas.classList.toggle("shrink");
     moonInfo.classList.toggle("open");
     groundSection.classList.toggle("visible");
     tabBar.classList.toggle("visible");
@@ -265,4 +266,15 @@ if ("serviceWorker" in navigator) {
   });
 }
 
+//Todo panel open/close
+const todoView = document.getElementById("todoView");
+const openTodoBtn = document.getElementById("openTodo");
+const closeTodoBtn = document.getElementById("closeTodo");
 
+openTodoBtn.addEventListener("click", () => {
+    todoView.classList.add("open");
+});
+
+closeTodoBtn.addEventListener("click", () => {
+    todoView.classList.remove("open");
+});

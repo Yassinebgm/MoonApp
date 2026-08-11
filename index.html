@@ -34,7 +34,7 @@
     <section class="ground">
         <nav class="menu">
             <button class="menu-item">Hadith</button>
-            <button class="menu-item">Todo</button>
+            <button class="menu-item" id="openTodo">Todo</button>
             <button class="menu-item">Focus Timer</button>
             <button class="menu-item">Coming Soon</button>
         </nav>
@@ -45,6 +45,16 @@
         <button class="tab-item">Profile</button>
         <button class="tab-item">Settings</button>
     </nav>
+    <section id="todoView" class="todo-view">
+        <button id="closeTodo" class="close-btn">X</button>
+        <h2>Todo List</h2>
+
+        <form id="todoForm">
+            <input type="text" id="todoInput" placeholder="Add a task..." autocomplete="off">
+            <button type="submit">Add</button>
+        </form>
+    </section>
+    <ul id="todoList"></ul>
 
     <script src="app.js"></script>
 </body>

@@ -227,12 +227,12 @@ drawCraters(cx, cy, r, 42);
 
 //for the animation of the dunes(scroll-reveal)
 // const observer = new IntersectionObserver((entries) => {
-    // entries.forEach((entry) => {
-        // if (entry.isIntersecting) {
-            // groundSection.classList.add("visible");
-            // tabBar.classList.add("visible");
-        // }
-    // });
+// entries.forEach((entry) => {
+// if (entry.isIntersecting) {
+// groundSection.classList.add("visible");
+// tabBar.classList.add("visible");
+// }
+// });
 // }, { threshold: 0.2 });
 
 //observer.observe(groundSection);
@@ -259,13 +259,15 @@ canvas.addEventListener("click", () => {
 
 //checks if the browser even supports service workers
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch((err) => {
-      console.log("Service worker failed:", err);
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch((err) => {
+            console.log("Service worker failed:", err);
+        });
     });
-  });
 }
 
+
+//TODO 
 //Todo panel open/close
 const todoView = document.getElementById("todoView");
 const openTodoBtn = document.getElementById("openTodo");
@@ -278,3 +280,97 @@ openTodoBtn.addEventListener("click", () => {
 closeTodoBtn.addEventListener("click", () => {
     todoView.classList.remove("open");
 });
+
+//data save
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function renderTasks() {
+    todoList.innerHTML = "";
+
+    tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = task.done;
+        checkbox.addEventListener("change", () => {
+            tasks[index].done = checkbox.checked;
+            saveTasks();
+            renderTasks();
+        });
+
+        const span = document.createElement("span");
+        span.textContent = task.text;
+        if (task.done) {
+            span.style.textDecoration = "line-through";
+            span.style.opacity = "0.5";
+        }
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "X";
+        deleteBtn.addEventListener("click", () => {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTasks();
+        });
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+        todoList.appendChild(li);
+    });
+}
+
+const todoForm = document.getElementById("todoForm");
+const todoInput = document.getElementById("todoInput");
+const todoList = document.getElementById("todoList");
+
+todoForm.addEventListener("submit", (event) => {
+    event.preventDefault(); // stop the page from reloading (default form behavior)
+
+    const text = todoInput.value.trim();
+    if (text === "") return; // ignore empty submissions
+
+    tasks.push({ text: text, done: false });
+    saveTasks();
+    renderTasks();
+
+    todoInput.value = ""; // clear the input for the next task
+});
+
+renderTasks(); // draw whatever was already saved, on page load
+
+//BOOKS FEATURE
+//Books panel open/close
+const booksView = document.getElementById("booksView");
+const openBooksBtn = document.getElementById("openBooks");
+const closeBooksBtn = document.getElementById("closeBooks");
+
+openBooksBtn.addEventListener("click", () => {
+    booksView.classList.add("open");
+});
+
+closeBooksBtn.addEventListener("click", () => {
+    booksView.classList.remove("open");
+});
+
+//stars
+//star picker
+const starPicker = document.getElementById("starPicker");
+const ratingStars = starPicker.querySelectorAll(".star");
+let selectedRating = 0;
+
+ratingStars.forEach((star) => {
+  star.addEventListener("click", () => {
+    selectedRating = parseInt(star.dataset.value);
+    updateStars();
+  });
+});
+
+function updateStars() {
+  ratingStars.forEach((star) => {
+    const value = parseInt(star.dataset.value);
+    star.classList.toggle("selected", value <= selectedRating);
+  });
+}

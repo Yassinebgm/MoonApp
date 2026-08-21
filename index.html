@@ -36,7 +36,7 @@
             <button class="menu-item">Hadith</button>
             <button class="menu-item" id="openTodo">Todo</button>
             <button class="menu-item">Focus Timer</button>
-            <button class="menu-item">Coming Soon</button>
+            <button class="menu-item" id="openBooks">Books</button>
         </nav>
     </section>
     <nav class="tab-bar">
@@ -53,8 +53,30 @@
             <input type="text" id="todoInput" placeholder="Add a task..." autocomplete="off">
             <button type="submit">Add</button>
         </form>
+        <ul id="todoList"></ul>
     </section>
-    <ul id="todoList"></ul>
+    <section id="booksView" class="todo-view">
+        <button id="closeBooks" class="close-btn">X</button>
+        <h2>Books</h2>
+
+        <form id="bookForm">
+            <input type="text" id="bookTitle" placeholder="Title" autocomplete="off">
+            <input type="text" id="bookAuthor" placeholder="Author" autocomplete="off">
+            <textarea id="bookQuote" placeholder="Favorite quote (optional)" rows="2"></textarea>
+
+            <div id="starPicker" class="star-picker">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            </div>
+
+            <button type="submit">Add Book</button>
+        </form>
+
+        <ul id="bookList"></ul>
+    </section>
 
     <script src="app.js"></script>
 </body>

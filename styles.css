@@ -161,7 +161,7 @@ h1 {
 .todo-view.open {
 display: block;
 }
-.toggle-btn {
+.close-btn {
     background: none;
     border: none;
     color: #E8E6DE;
@@ -171,7 +171,30 @@ display: block;
     top: 20px;
     right: 20px;
 }
+#todoList {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
 
+#todoList li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(232, 230, 222, 0.1);
+}
+
+#todoList li span {
+  flex: 1;
+}
+
+#todoList li button {
+  background: none;
+  border: none;
+  color: #8890A6;
+  cursor: pointer;
+}
 .ground.visible .menu-item {
     opacity: 1;
     transform: translateX(0);
@@ -222,3 +245,19 @@ display: block;
 color: #E8E6DE;
 }
 
+.star-picker {
+  display: flex;
+  gap: 6px;
+  font-size: 26px;
+  margin: 10px 0;
+}
+
+.star {
+  color: rgba(232, 230, 222, 0.2);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.star.selected {
+  color: #C9A24B;
+}

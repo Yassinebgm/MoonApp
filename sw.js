@@ -1,4 +1,4 @@
-const CACHE_NAME = "hueco-mundo-v3";
+const CACHE_NAME = "hueco-mundo";
 const ASSETS = [
     "./",
     "./index.html",
@@ -7,12 +7,14 @@ const ASSETS = [
     "./manifest.json",
     "./img/icon-192.png",
     "./img/icon-512.png",
-    "./img/layered-waves-haikei.svg"
+    "./img/layered-waves-haikei.svg",
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"
 ];
 
 self.addEventListener("install", (event) => {
     event.waitUntil(
-        cashes.open(CACHE_NAME).then((cache) => cache.addALL(ASSETS))     
+        cashes.open(CACHE_NAME).then((cache) => cache.addALL(ASSETS))
     );
     self.skipWaiting();
 });
@@ -21,14 +23,14 @@ self.addEventListener("activate", (event) => {
     event.waitUntil(
         cashes.keys().then((keys) =>
             Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => cashes.delete(k)))
-    )
+        )
     );
     self.clients.claim();
 });
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request);
-    })
-  );
+    event.respondWith(
+        caches.match(event.request).then((cached) => {
+            return cached || fetch(event.request);
+        })
+    );
 });

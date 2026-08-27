@@ -401,7 +401,6 @@ const mangaCtx = mangaCanvas.getContext("2d");
 let pdfDoc = null;
 let imagePages = [];
 let currentPage = 0;
-mode = "pdf"; 
 let mode = null;
 
 mangaInput.addEventListener("change", async (event) => {

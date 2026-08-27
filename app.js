@@ -395,11 +395,14 @@ const mangaImage = document.getElementById("mangaImage");
 const pageCounter = document.getElementById("pageCounter");
 const prevPageBtn = document.getElementById("prevPage");
 const nextPageBtn = document.getElementById("nextPage");
+const mangaCanvas = document.getElementById("mangaCanvas");
+const mangaCtx = mangaCanvas.getContext("2d");
 
 let pdfDoc = null;
 let imagePages = [];
-let pages = [];
 let currentPage = 0;
+mode = "pdf"; 
+let mode = null;
 
 mangaInput.addEventListener("change", async (event) => {
   const files = Array.from(event.target.files);
@@ -446,15 +449,15 @@ function totalPages() {
 
 
 prevPageBtn.addEventListener("click", () => {
-    if (currentPage > 0) {
-        currentPage--;
-        showPage();
-    }
+  if (currentPage > 1) {
+    currentPage--;
+    renderPage();
+  }
 });
 
 nextPageBtn.addEventListener("click", () => {
-    if (currentPage < pages.length - 1) {
-        currentPage++;
-        showPage();
-    }
+  if (mode && currentPage < totalPages()) {
+    currentPage++;
+    renderPage();
+  }
 });

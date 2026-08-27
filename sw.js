@@ -1,4 +1,4 @@
-const CACHE_NAME = "hueco-mundo-v1";
+const CACHE_NAME = "hueco-mundo-v2";
 const ASSETS = [
     "./",
     "./index.html",

@@ -388,7 +388,7 @@ closeMangaBtn.addEventListener("click", () => {
     mangaView.classList.remove("open");
 });
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc = "lib/pdf.worker.min.js"; // locale docs
 
 const mangaInput = document.getElementById("mangaInput");
 const mangaImage = document.getElementById("mangaImage");
@@ -429,18 +429,24 @@ async function renderPage() {
   if (mode === "pdf") {
     if (!pdfDoc) return;
     const page = await pdfDoc.getPage(currentPage);
-
-    // get the page at scale 1 first, just to read its natural size
     const unscaledViewport = page.getViewport({ scale: 1 });
 
-    // figure out how wide the visible area actually is
     const containerWidth = mangaCanvas.parentElement.clientWidth;
-    const scale = containerWidth / unscaledViewport.width;
+    const dpr = window.devicePixelRatio || 1;
+
+    // cap total pixels to stay safely under mobile canvas limits
+    const maxPixels = 4000000; // ~4 megapixels, safe on all phones
+    let scale = (containerWidth * dpr) / unscaledViewport.width;
+    const projectedPixels = (unscaledViewport.width * scale) * (unscaledViewport.height * scale);
+    if (projectedPixels > maxPixels) {
+      scale = Math.sqrt(maxPixels / (unscaledViewport.width * unscaledViewport.height));
+    }
 
     const viewport = page.getViewport({ scale: scale });
 
     mangaCanvas.width = viewport.width;
     mangaCanvas.height = viewport.height;
+    mangaCanvas.style.width = containerWidth + "px"; // CSS size stays screen-appropriate
 
     await page.render({ canvasContext: mangaCtx, viewport: viewport }).promise;
     pageCounter.textContent = `Page ${currentPage} of ${pdfDoc.numPages}`;

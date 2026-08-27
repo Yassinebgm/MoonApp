@@ -1,4 +1,4 @@
-const CACHE_NAME = "hueco-mundo-v1.2.1";
+const CACHE_NAME = "hueco-mundo-v1.2.2";
 const LOCAL_ASSETS = [
   "./",
   "./index.html",
@@ -7,28 +7,14 @@ const LOCAL_ASSETS = [
   "./manifest.json",
   "./img/icon-192.png",
   "./img/icon-512.png",
-  "./img/layered-waves-haikei.svg"
-];
-
-const CDN_ASSETS = [
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js",
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"
+  "./img/layered-waves-haikei.svg",
+  "./lib/pdf.min.js",
+  "./lib/pdf.worker.min.js"
 ];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(async (cache) => {
-      await cache.addAll(LOCAL_ASSETS);
-
-      for (const url of CDN_ASSETS) {
-        try {
-          const response = await fetch(url, { mode: "no-cors" });
-          await cache.put(url, response);
-        } catch (err) {
-          console.log("Failed to cache CDN asset:", url, err);
-        }
-      }
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(LOCAL_ASSETS))
   );
   self.skipWaiting();
 });

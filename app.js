@@ -429,9 +429,19 @@ async function renderPage() {
   if (mode === "pdf") {
     if (!pdfDoc) return;
     const page = await pdfDoc.getPage(currentPage);
-    const viewport = page.getViewport({ scale: 1.5 });
+
+    // get the page at scale 1 first, just to read its natural size
+    const unscaledViewport = page.getViewport({ scale: 1 });
+
+    // figure out how wide the visible area actually is
+    const containerWidth = mangaCanvas.parentElement.clientWidth;
+    const scale = containerWidth / unscaledViewport.width;
+
+    const viewport = page.getViewport({ scale: scale });
+
     mangaCanvas.width = viewport.width;
     mangaCanvas.height = viewport.height;
+
     await page.render({ canvasContext: mangaCtx, viewport: viewport }).promise;
     pageCounter.textContent = `Page ${currentPage} of ${pdfDoc.numPages}`;
   } else if (mode === "images") {
@@ -440,7 +450,6 @@ async function renderPage() {
     pageCounter.textContent = `Page ${currentPage} of ${imagePages.length}`;
   }
 }
-
 
 function totalPages() {
   return mode === "pdf" ? pdfDoc.numPages : imagePages.length;

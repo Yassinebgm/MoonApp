@@ -37,6 +37,7 @@
             <button class="menu-item" id="openTodo">Todo</button>
             <button class="menu-item">Focus Timer</button>
             <button class="menu-item" id="openBooks">Books</button>
+            <button class="menu-item" id="openManga">Manga</button>
         </nav>
     </section>
     <nav class="tab-bar">
@@ -55,6 +56,7 @@
         </form>
         <ul id="todoList"></ul>
     </section>
+
     <section id="booksView" class="todo-view">
         <button id="closeBooks" class="close-btn">X</button>
         <h2>Books</h2>
@@ -76,6 +78,22 @@
         </form>
 
         <ul id="bookList"></ul>
+    </section>
+
+    <section id="mangaView" class="todo-view">
+        <button id="closeManga" class="close-btn">X</button>
+        <h2>Manga Reader</h2>
+
+        <input type="file" id="mangaInput" accept="image/*" multiple>
+
+        <div id="mangaPage">
+            <img id="mangaImage" src="" alt="Manga Page">
+        </div>
+        <div class="manga-controls">
+            <button id="prevPage">◀ Prev</button>
+            <span id="pageCounter">0 / 0</span>
+            <button id="nextPage">Next ▶</button>
+        </div>
     </section>
 
     <script src="app.js"></script>

@@ -362,15 +362,59 @@ const ratingStars = starPicker.querySelectorAll(".star");
 let selectedRating = 0;
 
 ratingStars.forEach((star) => {
-  star.addEventListener("click", () => {
-    selectedRating = parseInt(star.dataset.value);
-    updateStars();
-  });
+    star.addEventListener("click", () => {
+        selectedRating = parseInt(star.dataset.value);
+        updateStars();
+    });
 });
 
 function updateStars() {
-  ratingStars.forEach((star) => {
-    const value = parseInt(star.dataset.value);
-    star.classList.toggle("selected", value <= selectedRating);
-  });
+    ratingStars.forEach((star) => {
+        const value = parseInt(star.dataset.value);
+        star.classList.toggle("selected", value <= selectedRating);
+    });
 }
+
+//manga reader
+const mangaView = document.getElementById("mangaView");
+const openMangaBtn = document.getElementById("openManga");
+const closeMangaBtn = document.getElementById("closeManga");
+
+openMangaBtn.addEventListener("click", () => {
+    mangaView.classList.add("open");
+});
+
+const mangaInput = document.getElementById("mangaInput");
+const mangaImage = document.getElementById("mangaImage");
+const pageCounter = document.getElementById("pageCounter");
+const prevPageBtn = document.getElementById("prevPage");
+const nextPageBtn = document.getElementById("nextPage");
+
+let pages = [];
+let currentPage = 0;
+
+mangaInput.addEventListener("change", (event) => {
+    pages = Array.from(event.target.files).map((file) => URL.createObjectURL(file));
+    currentPage = 0;
+    showPage();
+});
+
+function showPage() {
+    if (pages.length === 0) return;
+    mangaImage.src = pages[currentPage];
+    pageCounter.textContent = `Page ${currentPage + 1} of ${pages.length}`;
+}
+
+prevPageBtn.addEventListener("click", () => {
+    if (currentPage > 0) {
+        currentPage--;
+        showPage();
+    }
+});
+
+nextPageBtn.addEventListener("click", () => {
+    if (currentPage < pages.length - 1) {
+        currentPage++;
+        showPage();
+    }
+});

@@ -384,26 +384,66 @@ openMangaBtn.addEventListener("click", () => {
     mangaView.classList.add("open");
 });
 
+closeMangaBtn.addEventListener("click", () => {
+    mangaView.classList.remove("open");
+});
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
 const mangaInput = document.getElementById("mangaInput");
 const mangaImage = document.getElementById("mangaImage");
 const pageCounter = document.getElementById("pageCounter");
 const prevPageBtn = document.getElementById("prevPage");
 const nextPageBtn = document.getElementById("nextPage");
 
+let pdfDoc = null;
+let imagePages = [];
 let pages = [];
 let currentPage = 0;
 
-mangaInput.addEventListener("change", (event) => {
-    pages = Array.from(event.target.files).map((file) => URL.createObjectURL(file));
-    currentPage = 0;
-    showPage();
+mangaInput.addEventListener("change", async (event) => {
+  const files = Array.from(event.target.files);
+  if (files.length === 0) return;
+
+if (files[0].type === "application/pdf") {
+    mode = "pdf";
+    const arrayBuffer = await files[0].arrayBuffer();
+    pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    currentPage = 1;
+    mangaCanvas.style.display = "block";
+    mangaImage.style.display = "none";
+    renderPage();
+  } else {
+    mode = "images";
+    imagePages = files.map((file) => URL.createObjectURL(file));
+    currentPage = 1;
+    mangaCanvas.style.display = "none";
+    mangaImage.style.display = "block";
+    renderPage();
+  }
 });
 
-function showPage() {
-    if (pages.length === 0) return;
-    mangaImage.src = pages[currentPage];
-    pageCounter.textContent = `Page ${currentPage + 1} of ${pages.length}`;
+async function renderPage() {
+  if (mode === "pdf") {
+    if (!pdfDoc) return;
+    const page = await pdfDoc.getPage(currentPage);
+    const viewport = page.getViewport({ scale: 1.5 });
+    mangaCanvas.width = viewport.width;
+    mangaCanvas.height = viewport.height;
+    await page.render({ canvasContext: mangaCtx, viewport: viewport }).promise;
+    pageCounter.textContent = `Page ${currentPage} of ${pdfDoc.numPages}`;
+  } else if (mode === "images") {
+    if (imagePages.length === 0) return;
+    mangaImage.src = imagePages[currentPage - 1];
+    pageCounter.textContent = `Page ${currentPage} of ${imagePages.length}`;
+  }
 }
+
+
+function totalPages() {
+  return mode === "pdf" ? pdfDoc.numPages : imagePages.length;
+}
+
 
 prevPageBtn.addEventListener("click", () => {
     if (currentPage > 0) {

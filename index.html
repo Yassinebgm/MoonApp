@@ -12,6 +12,7 @@
         rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="img/icon-192.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
 <body>
@@ -84,7 +85,7 @@
         <button id="closeManga" class="close-btn">X</button>
         <h2>Manga Reader</h2>
 
-        <input type="file" id="mangaInput" accept="image/*" multiple>
+        <input type="file" id="mangaInput" accept="application/pdf,image/*" multiple>
 
         <div id="mangaPage">
             <img id="mangaImage" src="" alt="Manga Page">
